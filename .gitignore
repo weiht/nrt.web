@@ -1,5 +1,12 @@
+#maven
 target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.next
 release.properties
+#eclipse
+bin/
+.project
+.classpath
+.settings/
+build/
