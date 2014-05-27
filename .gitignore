@@ -1,12 +1,24 @@
+#java
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
 #maven
 target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.next
 release.properties
+
 #eclipse
 bin/
 .project
 .classpath
 .settings/
 build/
+
+#etc
+velocity.log*
