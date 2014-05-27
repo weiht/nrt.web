@@ -9,6 +9,7 @@
 	
 	<properties>
 		<core.version>0.0.1-SNAPSHOT</core.version>
+		<spring.version>4.0.5.RELEASE</spring.version>
 	</properties>
 	
 	<modules>
