@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.necros.scripting.ScriptRunner;
-import org.necros.webmvc.controllers.ContextBindings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

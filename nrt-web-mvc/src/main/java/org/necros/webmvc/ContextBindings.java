@@ -1,4 +1,4 @@
-package org.necros.webmvc.controllers;
+package org.necros.webmvc;
 
 public class ContextBindings {
 	public static final String SCRIPT_DONNOT_RENDER = "skipView";
