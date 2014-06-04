@@ -6,6 +6,9 @@
 *.war
 *.ear
 
+#web
+web.xml
+
 #maven
 target/
 pom.xml.tag
