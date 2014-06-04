@@ -43,7 +43,6 @@ implements PageRenderer, ApplicationContextAware {
 	public static final String FILE_LOADER_PATH_KEY = ".resource.loader.path";
 	public static final String INCLUDE_HANDLER_KEY = "eventhandler.include.class";
 	public static final String INCLUDE_HANDLER_VALUE = "org.apache.velocity.app.event.implement.IncludeRelativePath";
-	public static final String SERVICES_KEY = "services";
 	public static final String REQUEST_KEY = "request";
 	public static final String RESPONSE_KEY = "response";
 	public static final String PATH_KEY = "fullPath";
@@ -53,13 +52,11 @@ implements PageRenderer, ApplicationContextAware {
 	
 	protected MimeUtils mimeUtil;
 	protected String encoding = DEFAULT_ENCODING;
-	protected String basePath = System.getProperty("java.io.tmpdir");
 	protected String rootPathInRepo = MAVEN_RESOURCE_POSITION;
 	private Properties config = new Properties();
 	private VelocityEngine engine;
 	private VelocityContext context;
 	private ApplicationContext appContext;
-	private Map<String, Object> serviceBeans = new HashMap<String, Object>();;
 	private String configFile;
 	private RepositoryLocator locator;
 
@@ -142,7 +139,6 @@ implements PageRenderer, ApplicationContextAware {
 
 	private synchronized void initRepos(Properties props) {
 		File[] repos = loadRepos();
-		logger.debug("Repositories found at path [{}]: {}", basePath, repos);
 		StringBuilder loader = new StringBuilder();
 		if (repos != null && repos.length > 0) {
 			Arrays.sort(repos);
@@ -176,7 +172,6 @@ implements PageRenderer, ApplicationContextAware {
 			ToolManager tmgr = new ToolManager();
 			context = new VelocityContext(tmgr.createContext());
 			context.put(APP_CONTEXT_KEY, appContext);
-			context.put(SERVICES_KEY, serviceBeans);
 		}
 	}
 
@@ -214,12 +209,6 @@ implements PageRenderer, ApplicationContextAware {
 
 	public void setConfigFile(String fileName) {
 		this.configFile = fileName;
-	}
-
-	public void addServiceBeans(Map<String, Object> beans) {
-		if (beans != null && !beans.isEmpty()) {
-			serviceBeans.putAll(beans);
-		}
 	}
 
 	public void setLocator(RepositoryLocator locator) {

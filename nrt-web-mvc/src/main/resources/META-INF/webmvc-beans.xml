@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	">
+
+<bean name="mimeUtil" class="org.necros.util.MimeUtil">
+</bean>
+
+<bean name="mimeUtilMapping" abstract="true" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	<property name="targetObject" ref="mimeUtil"/>
+	<property name="targetMethod" value="addTypes"/>
+</bean>
+
+<bean parent="mimeUtilMapping">
+	<property name="arguments">
+		<list>
+			<map>
+				<entry key=".json" value="application/json"/>
+				<entry key=".xml" value="application/xml"/>
+				<entry key=".html" value="text/html"/>
+				<entry key=".htm" value="text/html"/>
+				<entry key=".css" value="text/css"/>
+				<entry key=".js" value="text/javascript"/>
+				<entry key=".doc" value="application/msword"/>
+				<entry key=".dot" value="application/msword"/>
+				<entry key=".docx" value="application/vnd.openxmlformats-officedocument.wordprocessingml.document"/>
+				<entry key=".dotx" value="application/vnd.openxmlformats-officedocument.wordprocessingml.template"/>
+				<entry key=".docm" value="application/vnd.ms-word.document.macroEnabled.12"/>
+				<entry key=".dotm" value="application/vnd.ms-word.template.macroEnabled.12"/>
+				<entry key=".xls" value="application/vnd.ms-excel"/>
+				<entry key=".xlt" value="application/vnd.ms-excel"/>
+				<entry key=".xla" value="application/vnd.ms-excel"/>
+				<entry key=".xlsx" value="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+				<entry key=".xltx" value="application/vnd.openxmlformats-officedocument.spreadsheetml.template"/>
+				<entry key=".xlsm" value="application/vnd.ms-excel.sheet.macroEnabled.12"/>
+				<entry key=".xltm" value="application/vnd.ms-excel.template.macroEnabled.12"/>
+				<entry key=".xlam" value="application/vnd.ms-excel.addin.macroEnabled.12"/>
+				<entry key=".xlsb" value="application/vnd.ms-excel.sheet.binary.macroEnabled.12"/>
+				<entry key=".ppt" value="application/vnd.ms-powerpoint"/>
+				<entry key=".pot" value="application/vnd.ms-powerpoint"/>
+				<entry key=".pps" value="application/vnd.ms-powerpoint"/>
+				<entry key=".ppa" value="application/vnd.ms-powerpoint"/>
+				<entry key=".pptx" value="application/vnd.openxmlformats-officedocument.presentationml.presentation"/>
+				<entry key=".potx" value="application/vnd.openxmlformats-officedocument.presentationml.template"/>
+				<entry key=".ppsx" value="application/vnd.openxmlformats-officedocument.presentationml.slideshow"/>
+				<entry key=".ppam" value="application/vnd.ms-powerpoint.addin.macroEnabled.12"/>
+				<entry key=".pptm" value="application/vnd.ms-powerpoint.presentation.macroEnabled.12"/>
+				<entry key=".potm" value="application/vnd.ms-powerpoint.template.macroEnabled.12"/>
+				<entry key=".ppsm" value="application/vnd.ms-powerpoint.slideshow.macroEnabled.12"/>
+			</map>
+		</list>
+	</property>
+</bean>
+
+<bean name="selfFileRepositoryLocator" class="org.necros.res.repo.SelfFileRepositoryLocator">
+</bean>
+
+<bean name="childFileRepositoryLocator" class="org.necros.res.repo.ChildRepositoryLocator">
+	<property name="contains" value="${repo.child.contains:.git,pom.xml}"></property>
+</bean>
+
+<bean name="childResourceLocator" class="org.necros.res.repo.ChildResourceLocator">
+	<property name="resourcePaths" value="${repo.res.paths:src/main/groovy,src/main/resources}"></property>
+</bean>
+
+<bean name="resourceProvider" class="org.necros.res.FileResourceProvider">
+	<property name="locator" ref="repositoryLocator"></property>
+</bean>
+
+<bean name="repositoryLocator" class="org.necros.res.repo.CompositeRepositoryLocator">
+	<property name="rootPaths" value="${repo.root.paths:${java.io.tmpdir}}"></property>
+	<property name="repositoryLocators">
+		<list>
+			<ref bean="selfFileRepositoryLocator"/>
+			<ref bean="childFileRepositoryLocator"/>
+		</list>
+	</property>
+	<property name="resourceLocators">
+		<list>
+			<ref bean="selfFileRepositoryLocator"/>
+			<ref bean="childResourceLocator"/>
+		</list>
+	</property>
+</bean>
+
+<bean name="scriptRunner" class="org.necros.scripting.GroovyScriptRunner">
+	<property name="resourceProvider" ref="resourceProvider"></property>
+</bean>
+
+<bean name="pageRenderer" class="org.necros.webmvc.velocity.VelocityPageRenderer">
+	<property name="locator" ref="repositoryLocator"></property>
+</bean>
+
+<bean name="contextBindingRequestHandler" class="org.necros.webmvc.ScriptingPageRequestHandler">
+	<property name="pageRenderer" ref="pageRenderer"></property>
+	<property name="scriptRunner" ref="scriptRunner"></property>
+</bean>
+
+</beans>
