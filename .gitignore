@@ -8,6 +8,7 @@
 
 #web
 web.xml
+webapp.properties
 
 #maven
 target/
@@ -25,3 +26,4 @@ build/
 
 #etc
 velocity.log*
+

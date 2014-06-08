@@ -1,0 +1,8 @@
+##Directories under /tmp will be checked for valid repositories.
+#repo.root.paths=/tmp
+
+##Directories contains .git or pom.xml will be treated as repositories.
+#repo.child.contains=.git,pom.xml
+
+##Directories under repositories which are listed below will be treated as resource root directories.
+#repo.res.paths=src/main/groovy,src/main/resources
