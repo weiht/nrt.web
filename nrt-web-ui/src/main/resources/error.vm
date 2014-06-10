@@ -1,0 +1,42 @@
+#bundle('error')
+#parse('ctx.inc')
+<!DocType html>
+<head>
+#parse('meta.inc')
+<title>#text($!{titleKey})</title>
+#parse('bootstrap.css.inc')
+</head>
+<body>
+<div class="container">
+<div class="row">
+
+<div class="col-md-12">
+	#text($!{errorMessageKey})
+</div>
+
+#if ($requestPath)
+<div class="col-md-12">
+	#text('request.path') $!{requestPath}
+</div>
+#end
+
+#if ($currentUser)
+<div class="col-md-12">
+	#text('current.user') $!{currentUser}
+</div>
+#end
+
+#if ($exception)
+<div class="col-md-12 error-text">
+	#text('exception') $!{exception.message}
+</div>
+<div class="col-md-12">
+	$!{exception.printStackTrace($response.writer)}
+</div>
+#end
+
+</div>
+</div>
+#parse('bootstrap.js.inc')
+</body>
+</html>
