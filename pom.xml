@@ -15,5 +15,6 @@
 	<modules>
 		<module>nrt-web-mvc</module>
     <module>nrt-webapp</module>
-  </modules>
+    <module>nrt-web-ui</module>
+	</modules>
 </project>
