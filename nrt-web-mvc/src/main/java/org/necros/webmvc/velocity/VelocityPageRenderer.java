@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -49,6 +48,7 @@ implements PageRenderer, ApplicationContextAware {
 	public static final String MAVEN_RESOURCE_POSITION = "/src/main/resources";
 	public static final String DEF_MIME_TYPE = "text/html";
 	public static final String DEFAULT_ENCODING = "UTF-8";
+	public static final String REPO_DIRS_KEY = "repoDirs";
 	
 	protected MimeUtils mimeUtil;
 	protected String encoding = DEFAULT_ENCODING;
@@ -59,6 +59,7 @@ implements PageRenderer, ApplicationContextAware {
 	private ApplicationContext appContext;
 	private String configFile;
 	private RepositoryLocator locator;
+	private String reposString;
 
 	public void render(String fullPath,
 			HttpServletRequest request, HttpServletResponse response,
@@ -138,18 +139,7 @@ implements PageRenderer, ApplicationContextAware {
 	}
 
 	private synchronized void initRepos(Properties props) {
-		File[] repos = loadRepos();
-		StringBuilder loader = new StringBuilder();
-		if (repos != null && repos.length > 0) {
-			Arrays.sort(repos);
-			for (File r: repos) {
-				if (loader.length() > 0) {
-					loader.append(',');
-				}
-				loader.append(locateRepo(r));
-			}
-		}
-		props.put(FILE_LOADER + FILE_LOADER_PATH_KEY, loader.toString());
+		props.put(FILE_LOADER + FILE_LOADER_PATH_KEY, ensureReposString());
 		props.put(CLASS_PATH_LOADER + LOADER_CLASS_KEY, CLASS_PATH_LOADER_NAME);
 		props.put(INCLUDE_HANDLER_KEY, INCLUDE_HANDLER_VALUE);
 		props.put(FILE_LOADER + LOADER_CLASS_KEY, FILE_LOADER_NAME);
@@ -172,7 +162,26 @@ implements PageRenderer, ApplicationContextAware {
 			ToolManager tmgr = new ToolManager();
 			context = new VelocityContext(tmgr.createContext());
 			context.put(APP_CONTEXT_KEY, appContext);
+			context.put(REPO_DIRS_KEY, ensureReposString());
 		}
+	}
+
+	private synchronized String ensureReposString() {
+		if (reposString == null) {
+			File[] repos = loadRepos();
+			StringBuilder loader = new StringBuilder();
+			if (repos != null && repos.length > 0) {
+				Arrays.sort(repos);
+				for (File r: repos) {
+					if (loader.length() > 0) {
+						loader.append(',');
+					}
+					loader.append(locateRepo(r));
+				}
+			}
+			reposString = loader.toString();
+		}
+		return reposString;
 	}
 
 	private synchronized void loadConfig(String fn) {
