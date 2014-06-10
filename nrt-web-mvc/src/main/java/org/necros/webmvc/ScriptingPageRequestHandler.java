@@ -1,5 +1,6 @@
 package org.necros.webmvc;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,8 @@ implements ContextBindingRequestHandler {
         Map<String, Object> extra = null;
         try {
 			extra = scriptRunner.runScript(path, extraContext);
+        } catch (FileNotFoundException e) {
+        	logger.info("Script not found. {}", path);
 		} catch (Exception e) {
 			throw new IOException(e);
 		}
@@ -44,8 +47,8 @@ implements ContextBindingRequestHandler {
         	Object fwd = extra.get(ContextBindings.SCRIPT_FORWARD_PAGE);
         	if (fwd != null) {
         		String p = calcForwardPath(path, (String)fwd);
-        		processRequest(p, extra, req, resp);
-        		return extraContext;
+        		extra = processRequest(p, extra, req, resp);
+        		return extra;
         	}
         	
         	r = extra.get(ContextBindings.SCRIPT_JSON_RESULT);

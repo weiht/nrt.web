@@ -214,4 +214,8 @@ implements PageRenderer, ApplicationContextAware {
 	public void setLocator(RepositoryLocator locator) {
 		this.locator = locator;
 	}
+
+	public void setMimeUtil(MimeUtils mimeUtil) {
+		this.mimeUtil = mimeUtil;
+	}
 }

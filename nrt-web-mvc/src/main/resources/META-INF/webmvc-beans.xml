@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 	">
 
-<bean name="mimeUtil" class="org.necros.util.MimeUtil">
+<bean name="mimeUtil" class="org.necros.util.MimeUtils">
 </bean>
 
 <bean name="mimeUtilMapping" abstract="true" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -58,6 +58,15 @@
 	</property>
 </bean>
 
+<bean name="responseUtil" class="org.necros.webmvc.util.ResponseUtil">
+	<property name="pageRenderer" ref="pageRenderer"></property>
+	<property name="pages"><map>
+		<entry key="401" value="/401.html"></entry>
+		<entry key="404" value="/404.html"></entry>
+		<entry key="500" value="/500.html"></entry>
+	</map></property>
+</bean>
+
 <bean name="selfFileRepositoryLocator" class="org.necros.res.repo.SelfFileRepositoryLocator">
 </bean>
 
@@ -95,6 +104,7 @@
 
 <bean name="pageRenderer" class="org.necros.webmvc.velocity.VelocityPageRenderer">
 	<property name="locator" ref="repositoryLocator"></property>
+	<property name="mimeUtil" ref="mimeUtil"></property>
 </bean>
 
 <bean name="contextBindingRequestHandler" class="org.necros.webmvc.ScriptingPageRequestHandler">
