@@ -41,6 +41,7 @@ implements PageRenderer, ApplicationContextAware {
 	public static final String CLASS_PATH_LOADER_NAME = "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader";
 	public static final String FILE_LOADER_PATH_KEY = ".resource.loader.path";
 	public static final String INCLUDE_HANDLER_KEY = "eventhandler.include.class";
+	public static final String CUSTOM_DIRECTIVE_KEY = "userdirective";
 	public static final String INCLUDE_HANDLER_VALUE = "org.apache.velocity.app.event.implement.IncludeRelativePath";
 	public static final String REQUEST_KEY = "request";
 	public static final String RESPONSE_KEY = "response";
@@ -131,11 +132,20 @@ implements PageRenderer, ApplicationContextAware {
 			initGlobalContext();
 			if (config != null) {
 				initRepos(config);
+				initMacros(config);
 				logger.debug("Velocity engine init config: {}", config);
 				engine.init(config);
 			}
 			logger.debug("Velocity engine initialized.");
 		}
+	}
+
+	private void initMacros(Properties conf) {
+		StringBuilder dirs = new StringBuilder();
+		dirs.append(BundleDirective.class.getName());
+		dirs.append(",");
+		dirs.append(TextDirective.class.getName());
+		conf.put(CUSTOM_DIRECTIVE_KEY, dirs.toString());
 	}
 
 	private synchronized void initRepos(Properties props) {

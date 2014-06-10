@@ -79,7 +79,7 @@ extends Directive {
 	private void loadMixedBundles(InternalContextAdapter ctx,
 			String bundleName, Locale lc, String repos) {
 		URL[] urls = reposToUrls(repos);
-		ClassLoader cloader = new URLClassLoader(urls);
+		ClassLoader cloader = new URLClassLoader(urls, getClass().getClassLoader());
 		ResourceBundle bundle = ResourceBundle.getBundle(bundleName, lc, cloader);
 		ctx.put(BUNDLE_KEY, bundle);
 	}
@@ -108,6 +108,7 @@ extends Directive {
 	}
 
 	private String getBundleName(InternalContextAdapter ctx, Node n) {
+		//TODO Retrieve bundle to current template.
 		if (n.jjtGetNumChildren() < 1) {
 			// 获取默认资源
 			String bundleName = pathToBundleName((String) ctx.get(VelocityPageRenderer.PATH_KEY));

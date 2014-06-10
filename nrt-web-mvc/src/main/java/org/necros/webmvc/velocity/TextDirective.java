@@ -47,6 +47,7 @@ extends Directive {
 		String str = bundle.getString(key);
 		if (StringUtils.isEmpty(str)) {
 			logger.trace("No resource with name {} found.", key);
+			//TODO Format string with consequent nodes passed into this directive.
 			w.write(key);
 			return false;
 		}
