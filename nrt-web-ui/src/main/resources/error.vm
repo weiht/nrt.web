@@ -31,7 +31,9 @@
 	#text('exception') $!{exception.message}
 </div>
 <div class="col-md-12">
+<pre>
 	$!{exception.printStackTrace($response.writer)}
+</pre>
 </div>
 #end
 
