@@ -10,7 +10,7 @@
 
         <context:annotation-config/>
         <mvc:annotation-driven/>
-        <context:component-scan base-package="org.necros.webmvc.controllers" resource-pattern="**/ScriptPageController.class"></context:component-scan>
+        <context:component-scan base-package="org.necros.webmvc.controllers" resource-pattern="**/StaticController.class"></context:component-scan>
 
         <bean id="multipartResolver"
                 class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
