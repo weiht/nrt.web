@@ -124,6 +124,7 @@ extends Directive {
 
 	private String pathToBundleName(String bundleName) {
 		//最后一段路径中不允许出现点
+
 		int ix = bundleName.lastIndexOf('/');
 		if (ix >= 0) {
 			ix = bundleName.indexOf('.', ix);
