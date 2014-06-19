@@ -24,10 +24,8 @@ public class ScriptPageController {
 
     @RequestMapping("/**")
     public void html(HttpServletRequest req, HttpServletResponse resp) {
-    	String servletPath = req.getServletPath();
-    	String pathInfo = req.getPathInfo();
-    	logger.trace("Servlet path: {}, path info: {}, file path: {}", servletPath, pathInfo);
         String path = (String)req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        logger.trace("Processing request to resource: {}", path);
     	try {
 			requestHandler.processRequest(path, null, req, resp);
 		} catch (IOException e) {
