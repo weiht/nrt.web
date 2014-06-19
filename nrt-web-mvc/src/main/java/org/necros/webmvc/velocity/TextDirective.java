@@ -44,7 +44,13 @@ extends Directive {
 			w.write(key);
 			return false;
 		}
-		String str = bundle.getString(key);
+		String str;
+		try {
+			str = bundle.getString(key);
+		} catch (Exception e) {
+			w.write(key);
+			return false;
+		}
 		if (StringUtils.isEmpty(str)) {
 			logger.trace("No resource with name {} found.", key);
 			//TODO Format string with consequent nodes passed into this directive.
@@ -52,6 +58,9 @@ extends Directive {
 			return false;
 		}
 		logger.trace("Resource found: {} = {}", key, str);
+		if (n.jjtGetNumChildren() > 1) {
+			str = format(str, ctx, n);
+		}
 		w.write(str);
 		return true;
 	}
@@ -65,5 +74,19 @@ extends Directive {
 		SimpleNode nkey = (SimpleNode) n.jjtGetChild(0);
 		String key = (String) nkey.value(ctx);
 		return key;
+	}
+
+	private String format(String str, InternalContextAdapter ctx, Node n) {
+		int num = n.jjtGetNumChildren();
+		Object[] paramList = new Object[num - 1];
+		for (int i = 1; i < num; i ++) {
+			paramList[i - 1] = n.jjtGetChild(i).value(ctx);
+		}
+		try {
+			return String.format(str, paramList);
+		} catch (Exception e) {
+			logger.warn("Error formating resource.", e);
+			return str;
+		}
 	}
 }
