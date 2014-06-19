@@ -48,6 +48,20 @@
 		<servlet-name>scriptPages</servlet-name>
 		<url-pattern>*.html</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>staticResources</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath*:META-INF/*-static.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>staticResources</servlet-name>
+		<url-pattern>/static/*</url-pattern>
+	</servlet-mapping>
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
