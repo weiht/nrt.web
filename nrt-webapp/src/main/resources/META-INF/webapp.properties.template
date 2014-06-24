@@ -6,3 +6,8 @@
 
 ##Directories under repositories which are listed below will be treated as resource root directories.
 #repo.res.paths=src/main/groovy,src/main/resources
+
+#db.url=jdbc:mysql://localhost:3306/nrt?useUnicode=true&characterEncoding=utf8
+#db.driver=com.mysql.jdbc.Driver
+#db.user=web
+#db.password=web

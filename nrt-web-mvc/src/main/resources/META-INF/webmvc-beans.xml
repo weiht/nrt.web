@@ -100,6 +100,7 @@
 
 <bean name="scriptRunner" class="org.necros.scripting.GroovyScriptRunner">
 	<property name="resourceProvider" ref="resourceProvider"></property>
+	<property name="repositoryLocator" ref="repositoryLocator"></property>
 </bean>
 
 <bean name="pageRenderer" class="org.necros.webmvc.velocity.VelocityPageRenderer">

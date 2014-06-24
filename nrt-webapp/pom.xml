@@ -11,7 +11,11 @@
 	<artifactId>nrt-webapp</artifactId>
 	<packaging>war</packaging>
 	<name>Webapp</name>
-	
+
+	<properties>
+		<nutz.version>1.b.50</nutz.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.necros.nrt.web</groupId>
@@ -42,6 +46,24 @@
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.nutz</groupId>
+			<artifactId>nutz</artifactId>
+			<version>${nutz.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.4</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.30</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

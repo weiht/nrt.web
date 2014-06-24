@@ -9,5 +9,16 @@
         ">
 
     <context:property-placeholder location="classpath*:META-INF/*.properties"/>
+    
+    <bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+    	<property name="url" value="${db.url}"></property>
+    	<property name="driverClassName" value="${db.driver}"></property>
+    	<property name="username" value="${db.user}"></property>
+    	<property name="password" value="${db.password}"></property>
+    </bean>
+    
+    <bean name="dao" class="org.nutz.dao.impl.NutDao">
+    	<constructor-arg><ref bean="dataSource"/></constructor-arg>
+    </bean>
 
 </beans>
