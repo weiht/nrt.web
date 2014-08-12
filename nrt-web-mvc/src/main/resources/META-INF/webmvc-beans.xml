@@ -67,6 +67,9 @@
 	</map></property>
 </bean>
 
+<bean name="sessionUtil" class="org.necros.webmvc.util.SessionUtil">
+</bean>
+
 <bean name="selfFileRepositoryLocator" class="org.necros.res.repo.SelfFileRepositoryLocator">
 </bean>
 
